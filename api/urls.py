@@ -2,6 +2,7 @@
 from django.urls import path
 from .views import ExpenseListView, ExpenseDetailView, IncomeListView, IncomeDetailView, BudgetListView, BudgetDetailView
 from .views import register_user, login_user
+from . import views
 
 urlpatterns = [
     path('register/', register_user, name='register'),
@@ -12,4 +13,6 @@ urlpatterns = [
     path('income/<int:pk>/', IncomeDetailView.as_view(), name='income-detail'),
     path('budget/', BudgetListView.as_view(), name='budget-list'),  # New budget endpoints
     path('budget/<int:pk>/', BudgetDetailView.as_view(), name='budget-detail'),  # Detail endpoint for budget
+    path('ping/', views.ping, name='ping'),  # Add the ping endpoint here
+
 ]
