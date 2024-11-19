@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import RegisterSerializer
-from django.http import JsonResponse
+
 class ExpenseListView(generics.ListCreateAPIView):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
@@ -45,16 +45,25 @@ def register_user(request):
 def login_user(request):
     username = request.data.get("username")
     password = request.data.get("password")
+    
+    # Authenticate the user using the provided credentials
     user = authenticate(username=username, password=password)
+    
     if user is not None:
+        # Generate JWT token for the authenticated user
         refresh = RefreshToken.for_user(user)
+        
+        # Add user_id and username to the JWT token's payload
+        refresh.payload['user_id'] = user.id
+        refresh.payload['username'] = user.username
+        
+        # Return the refresh token and access token along with user info
         return Response({
             "refresh": str(refresh),
             "access": str(refresh.access_token),
+            "user_id": user.id,
+            "username": user.username
         })
+    
+    # If authentication fails, return an error response
     return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-
-# Add a new ping endpoint for keep-alive purposes
-@api_view(['GET'])
-def ping(request):
-    return JsonResponse({'status': 'ok'}, status=status.HTTP_200_OK)

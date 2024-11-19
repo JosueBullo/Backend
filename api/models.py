@@ -34,3 +34,4 @@ class Budget(models.Model):
 
     def __str__(self):
         return f"{self.category}: {self.amount} for {self.month}"
+    
