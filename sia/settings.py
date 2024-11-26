@@ -53,7 +53,7 @@ MIDDLEWARE = [
         'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'https://financialmanagmentsystem.onrender.com',
 ]
 ROOT_URLCONF = 'sia.urls'
 
